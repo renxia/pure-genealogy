@@ -119,6 +119,37 @@ npm run dev
 
 访问 [http://localhost:3000](http://localhost:3000) 开始使用。
 
+### 6. Docker 支持
+
+项目 `docker/` 目录包含容器镜像和 compose 配置。
+
+1. 复制环境变量模板：
+
+```bash
+cp .env.example .env
+# 根据实际 Supabase / Postgres 环境值修改 .env
+```
+
+2. 使用 docker-compose 启动：
+
+```bash
+docker compose -f docker/docker-compose.build.yml up --build
+```
+
+3. 在浏览器打开：http://localhost:3000
+
+可使用 `docker compose -f docker/docker-compose.yml down` 关闭并清理容器。
+
+### 7. GitHub Actions 自动构建镜像
+
+仓库已新增 GitHub Actions Workflow：`.github/workflows/docker-image.yml`。
+
+- 触发条件：`push` 到 `main` 或手动触发 `workflow_dispatch`。
+- 执行内容：构建 `docker/Dockerfile`、使用 `docker/build-push-action` 推送到 `ghcr.io`。
+- 镜像标签：`latest` + `${{ github.sha }}`。
+
+请确保已开启 GitHub Packages 并允许 `GITHUB_TOKEN` 写入。
+
 ## 📂 项目结构
 
 ```
